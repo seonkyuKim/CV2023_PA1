@@ -7,7 +7,7 @@ import os
 
 from Birchfield_Tomasi_dissimilarity import Birchfield_Tomasi_dissimilarity
 from aggregate_cost_volume import aggregate_cost_volume
-from const import LEFT, RIGHT, PATCH_SIZE
+from const import LEFT, RIGHT, PATCH_SIZE, NOISE
 from warp import warp_image
 
 
@@ -15,9 +15,9 @@ from warp import warp_image
 # Add comments to parts related to scoring criteria to get graded.
 
 def semi_global_matching(left_image, right_image, d, direction_biased, index):
-    cost_volume_file_name = f'output/Cost/cost_volume_{PATCH_SIZE}_{index}.npy'
-    cost_disparity_file_name = f'output/Cost/cost_disparity_{PATCH_SIZE}_{index}.npy'
-    cost_disparity_image_name = f'output/Cost/cost_disparity_{PATCH_SIZE}_{index}.png'
+    cost_volume_file_name = f'output/Noise_{NOISE}/Cost/cost_volume_{PATCH_SIZE}_{index}.npy'
+    cost_disparity_file_name = f'output/Noise_{NOISE}/Cost/cost_disparity_{PATCH_SIZE}_{index}.npy'
+    cost_disparity_image_name = f'output/Noise_{NOISE}/Cost/cost_disparity_{PATCH_SIZE}_{index}.png'
 
     # 캐시처럼 사용. 존재하지 않을 경우 저장
     if not os.path.exists(cost_volume_file_name) or not os.path.exists(cost_disparity_file_name):
@@ -45,9 +45,9 @@ def semi_global_matching(left_image, right_image, d, direction_biased, index):
 
     cv2.imwrite(cost_disparity_image_name, result_image)
 
-    aggregated_volume_file_name = f'output/Final_Disparity/aggregated_cost_volume_{PATCH_SIZE}_{index}.npy'
-    aggregated_disparity_file_name = f'output/Final_Disparity/aggregated_disparity_{PATCH_SIZE}_{index}.npy'
-    aggregated_disparity_image_name = f'output/Final_Disparity/aggregated_disparity_{PATCH_SIZE}_{index}.png'
+    aggregated_volume_file_name = f'output/Noise_{NOISE}/Final_Disparity/aggregated_cost_volume_{PATCH_SIZE}_{index}.npy'
+    aggregated_disparity_file_name = f'output/Noise_{NOISE}/Final_Disparity/aggregated_disparity_{PATCH_SIZE}_{index}.npy'
+    aggregated_disparity_image_name = f'output/Noise_{NOISE}/Final_Disparity/aggregated_disparity_{PATCH_SIZE}_{index}.png'
 
     # 캐시처럼 사용. 존재하지 않을 경우 저장
     if not os.path.exists(aggregated_volume_file_name) or not os.path.exists(aggregated_disparity_file_name):
@@ -81,13 +81,12 @@ def semi_global_matching(left_image, right_image, d, direction_biased, index):
 if __name__ == "__main__":
     img_list = list()
     ground_truth = None
-    noise = 25
 
     # Load required images
     target_image = None
 
     for i in range(1, 8):
-        img = cv2.imread(f"input/0{i}_noise{noise}.png")  # 215 x 328 image
+        img = cv2.imread(f"other_input/noise{NOISE}/0{i}_noise{NOISE}.png")  # 215 x 328 image
         img = img.astype(np.float64)
 
         if i == 4:
@@ -109,7 +108,7 @@ if __name__ == "__main__":
     for i, image in enumerate(img_list):
         aggregated_disparity, direction_biased = disparity_list[i]
         warped_image = warp_image(image, aggregated_disparity, direction_biased)
-        cv2.imwrite(f'output/Warped/warped_image_{PATCH_SIZE}_{i}.png', warped_image)
+        cv2.imwrite(f'output/Noise_{NOISE}/Warped/warped_image_{PATCH_SIZE}_{i}.png', warped_image)
         warped_image_list.append(warped_image)
 
     boundary_range = d
@@ -119,7 +118,7 @@ if __name__ == "__main__":
 
     # Aggregate warped images
     aggregated_warped_image = np.sum(warped_image_list, axis=0) / len(warped_image_list)
-    cv2.imwrite(f'output/Warped/aggregated_warped_image_{PATCH_SIZE}.png', aggregated_warped_image)
+    cv2.imwrite(f'output/Noise_{NOISE}/Warped/aggregated_warped_image_{PATCH_SIZE}.png', aggregated_warped_image)
     cropped_aggregated_warped_image = aggregated_warped_image[boundary_range:-boundary_range,
                                       boundary_range:-boundary_range]
 
@@ -143,7 +142,7 @@ if __name__ == "__main__":
     mse = mse / (len(cropped_ground_truth) * len(cropped_ground_truth[0]))
     psnr = 20 * math.log10(255) - 10 * math.log10(mse)
 
-    text = f"""noise: {noise}
+    text = f"""noise: {NOISE}
 patch size: {PATCH_SIZE}
 [BEFORE]
 MSE: {before_mse}
@@ -155,5 +154,5 @@ PSNR: {psnr}
 
     print(text)
 
-    with open(f'output/result_{PATCH_SIZE}.txt', 'w') as f:
+    with open(f'output/Noise_{NOISE}/result_{PATCH_SIZE}.txt', 'w') as f:
         f.write(text)

@@ -10,12 +10,15 @@ pip3 install -r requirements.txt
 python3 Semi_Global_Matching.py 
 ```
 
-`ouput` 디렉토리 안에 .npy 데이터를 저장해두어 캐시로 사용합니다. 만약 해당 파일이 존재할 경우 계산이 오래 걸리는 cost_volume 등을 다시 구하지 않습니다. 이 과정을 보고 싶은 경우 해당
-파일들을 제거한 후 실행해주세요.
-const.py 에서 PATCH_SIZE 변수를 조정할 수 있습니다.
-MSE, PSNR 결과는 콘솔에 출력되고, ouput/result_{PATCH_SIZE}.txt 에 결과 이미지가 저장됩니다.
+`ouput` 디렉토리 안에 .npy 데이터를 저장해두어 캐시로 사용합니다. 만약 해당 파일이 존재할 경우 계산이 오래 걸리는 cost_volume 등을 다시 구하지 않습니다.
+캐시 파일들은 용량이 너무 큰 관계로 git 에 commit 하지 않았습니다.
 
-## outpu 디렉토리 파일 설명
+MSE, PSNR 결과는 콘솔에 출력되고, output/Noise_{NOISE}/result_{PATCH_SIZE}.txt 에 결과 이미지가 저장됩니다.
+
+- const.py 에서 PATCH_SIZE 변수를 조정할 수 있습니다.
+- const.py 에서 NOISE 변수를 조정할 수 있습니다.
+
+## output 디렉토리 파일 설명
 
 ground truth 는 input 의 7개 이미지 중 4번째 이미지입니다.
 아래에서 사용되는 index 는 7개 중 4번째 이미지가 제거된 index 입니다.
