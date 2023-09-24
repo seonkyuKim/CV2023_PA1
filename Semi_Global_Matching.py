@@ -111,6 +111,8 @@ if __name__ == "__main__":
         cv2.imwrite(f'output/Noise_{NOISE}/Warped/warped_image_{PATCH_SIZE}_{i}.png', warped_image)
         warped_image_list.append(warped_image)
 
+    warped_image_list.append(target_image)
+
     boundary_range = d
     ground_truth = cv2.imread(f"target/gt.png")
     ground_truth = ground_truth.astype(np.float64)
