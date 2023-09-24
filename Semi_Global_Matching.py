@@ -5,7 +5,7 @@ import numpy as np
 from tqdm import tqdm
 import os
 
-from Birchfield_Tomasi_dissimilarity import get_cost_volume
+from cost_volume import get_cost_volume
 from aggregate_cost_volume import aggregate_cost_volume
 from const import LEFT, RIGHT, PATCH_SIZE, NOISE
 from warp import warp_image

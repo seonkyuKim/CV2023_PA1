@@ -2,7 +2,6 @@ import numpy as np
 from tqdm import tqdm
 
 from const import LEFT, MARGIN
-from intensity import get_intensity
 
 
 def get_cost_volume(left_image, right_image, d, direction_biased):
@@ -57,3 +56,7 @@ def SAD(left_pixels, right_pixels):
         sum_value += abs(get_intensity(l) - get_intensity(r))
 
     return sum_value / len(left_pixels)
+
+
+def get_intensity(rgb):
+    return (0.299 * rgb[0]) + (0.587 * rgb[1]) + (0.114 * rgb[2])
