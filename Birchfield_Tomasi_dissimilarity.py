@@ -5,7 +5,7 @@ from const import LEFT, MARGIN
 from intensity import get_intensity
 
 
-def Birchfield_Tomasi_dissimilarity(left_image, right_image, d, direction_biased):
+def get_similarity(left_image, right_image, d, direction_biased):
     y_len = len(left_image)
     x_len = len(left_image[0])
 

@@ -5,7 +5,7 @@ import numpy as np
 from tqdm import tqdm
 import os
 
-from Birchfield_Tomasi_dissimilarity import Birchfield_Tomasi_dissimilarity
+from Birchfield_Tomasi_dissimilarity import get_similarity
 from aggregate_cost_volume import aggregate_cost_volume
 from const import LEFT, RIGHT, PATCH_SIZE, NOISE
 from warp import warp_image
@@ -22,7 +22,7 @@ def semi_global_matching(left_image, right_image, d, direction_biased, index):
     # 캐시처럼 사용. 존재하지 않을 경우 저장
     if not os.path.exists(cost_volume_file_name) or not os.path.exists(cost_disparity_file_name):
         print(f'cost_volume_{index}.npy does not exist. Generating...')
-        cost_volume, cost_disparity = Birchfield_Tomasi_dissimilarity(left_image, right_image, d, direction_biased)
+        cost_volume, cost_disparity = get_similarity(left_image, right_image, d, direction_biased)
 
         with open(cost_volume_file_name, 'wb') as f:
             np.save(f, cost_volume)
