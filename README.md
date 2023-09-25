@@ -48,3 +48,7 @@ cost volume 계산 값과 중간 disparity map 을 저장합니다.
 
 - warped_image_{PATCH_SIZE}_{index}.png: 와핑된 이미지
 - aggregated_warped_image_{PATCH_SIZE}.png: 와핑된 이미지를 aggregate 한 이미지
+
+# Github
+
+코드는 github 에서도 확인할 수 있습니다: https://github.com/seonkyuKim/CV2023_PA1
